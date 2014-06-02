@@ -1,0 +1,46 @@
+*filter
+:INPUT DROP [0:0]
+:FORWARD DROP [0:0]
+:OUTPUT DROP [0:0]
+:LOGGING - [0:0]
+
+# ブロードキャスト/マルチキャストアドレスはログを取らずに破棄
+-A INPUT -d 255.255.255.255 -j DROP
+-A INPUT -d 219.94.233.255 -j DROP
+-A INPUT -d 224.0.0.1 -j DROP
+
+# Loopback
+-A INPUT  -i lo -j ACCEPT 
+-A OUTPUT -o lo -j ACCEPT 
+
+# NEWステートで syn ビットの立っていないパケットは拒否
+-A INPUT -p tcp -m tcp ! --tcp-flags FIN,SYN,RST,ACK SYN -m state --state NEW -j DROP 
+
+# セッションが確立したパケットは許可
+-A INPUT  -m state --state RELATED,ESTABLISHED -j ACCEPT 
+-A OUTPUT -m state --state RELATED,ESTABLISHED -j ACCEPT 
+
+# ping
+-A INPUT  -p icmp -m icmp --icmp-type 0 -j ACCEPT 
+-A INPUT  -p icmp -m icmp --icmp-type 8 -j ACCEPT 
+-A OUTPUT -p icmp -m icmp --icmp-type 0 -j ACCEPT 
+-A OUTPUT -p icmp -m icmp --icmp-type 8 -j ACCEPT 
+
+# SSH
+-A INPUT -p tcp -m state --state NEW -m tcp --dport {{ ssh_port | default(22) }} -j ACCEPT
+
+# dns
+-A OUTPUT -p udp -m udp --dport 53 -j ACCEPT 
+
+{% for protocol, port in {"http":80, "https":443, "git":9418}.iteritems() %}
+# {{ protocol }}
+-A OUTPUT -p tcp -m state --state NEW -m tcp --dport {{ port }} -j ACCEPT 
+{% endfor %}
+
+-A INPUT  -j LOGGING 
+-A OUTPUT -j LOGGING 
+
+-A LOGGING -m limit --limit 3/hour -j LOG --log-prefix "DROP:" 
+-A LOGGING -j DROP 
+
+COMMIT

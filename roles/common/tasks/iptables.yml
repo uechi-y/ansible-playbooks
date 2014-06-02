@@ -1,0 +1,8 @@
+---
+- name: configure iptables rule
+  template: dest=/etc/iptables.up.rules src=iptables.up.rules.j2 owner=root group=root mode=0644
+  notify:
+  - restore iptables rule
+
+- name: setup iptables startup script
+  copy: dest=/etc/network/if-pre-up.d/iptables src=iptables owner=root group=root mode=0755
