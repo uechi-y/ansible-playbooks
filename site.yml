@@ -1,33 +1,8 @@
 ---
 - hosts: all
   tasks:
-  - name: disable PasswordAuthentication
-    lineinfile: dest=/etc/ssh/sshd_config regexp="^#?PasswordAuthentication" line="PasswordAuthentication no"
-    notify:
-    - restart sshd
-
-  - name: disable PermitRootLogin
-    lineinfile: dest=/etc/ssh/sshd_config regexp="^#?PermitRootLogin" line="PermitRootLogin no"
-    notify:
-    - restart sshd
-
-  - name: disable RhostsRSAAuthentication
-    lineinfile: dest=/etc/ssh/sshd_config regexp="^#?RhostsRSAAuthentication" line="RhostsRSAAuthentication no"
-    notify:
-    - restart sshd
-
-  - name: disable ChallengeResponseAuthentication
-    lineinfile: dest=/etc/ssh/sshd_config regexp="^#?ChallengeResponseAuthentication" line="ChallengeResponseAuthentication no"
-    notify:
-    - restart sshd
-
-  - name: disable UsePAM
-    lineinfile: dest=/etc/ssh/sshd_config regexp="^#?UsePAM" line="UsePAM no"
-    notify:
-    - restart sshd
-
-  - name: set SSH port
-    lineinfile: dest=/etc/ssh/sshd_config regexp="^Port" line="Port {{ ssh_port | default(22) }}"
+  - name: configure sshd
+    template: dest=/etc/ssh/sshd_config src=templates/sshd_config.j2 owner=root group=root mode=0644
     notify:
     - restart sshd
 
