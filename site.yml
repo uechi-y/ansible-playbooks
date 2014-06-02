@@ -1,11 +1,4 @@
 ---
 - hosts: all
-  tasks:
-  - name: configure sshd
-    template: dest=/etc/ssh/sshd_config src=templates/sshd_config.j2 owner=root group=root mode=0644
-    notify:
-    - restart sshd
-
-  handlers:
-    - name: restart sshd
-      service: name=ssh state=restarted
+  roles:
+    - common
