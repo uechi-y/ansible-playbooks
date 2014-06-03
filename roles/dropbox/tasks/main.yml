@@ -1,0 +1,7 @@
+---
+- name: install python-gpgme package
+  apt: pkg=python-gpgme state=present
+
+- name: fetch Dropbox CLI
+  get_url: url=https://www.dropbox.com/download?dl=packages/dropbox.py dest=/usr/local/bin/dropbox mode=0755 
+
