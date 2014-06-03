@@ -2,6 +2,8 @@
 - name: install packages
   apt: name={{ item }} state=present
   with_items:
+    - emacs24-nox
     - git
     - lv
+    - tmux
     - zsh
