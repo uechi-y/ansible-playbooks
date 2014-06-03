@@ -1,0 +1,9 @@
+---
+- hosts: all
+  tasks:
+    - name: start dropbox automatically
+      cron: name="dropbox" job="/usr/local/bin/dropbox start" special_time=reboot
+
+    - name: install homesick
+      git: repo=git://github.com/andsens/homeshick.git dest={{ ansible_env.HOME }}/.homesick/repos/homeshick
+
