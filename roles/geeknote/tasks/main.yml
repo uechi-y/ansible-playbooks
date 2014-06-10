@@ -6,4 +6,13 @@
     - python-setuptools
 
 - name: fetch geeknote git repository
-  git: repo=git://github.com/VitaliyRodnenko/geeknote.git dest=/tmp/geeknote
+  git: repo=git://github.com/VitaliyRodnenko/geeknote.git dest={{ src_dir }}
+
+- name: install geeknote
+  shell: PYTHONPATH={{ prefix }}/lib/python2.7/site-packages python setup.py install --prefix={{ prefix }} chdir={{ src_dir }} creates={{ prefix }}/bin/geeknote
+
+- name: stow geeknote
+  command: stow geeknote chdir=/usr/local/stow creates=/usr/local/bin/geeknote
+
+- name: set PYTHONPATH
+  lineinfile: dest=/etc/zsh/zshenv regexp='^export +PYTHONPATH=' line='export PYTHONPATH=/usr/local/lib/python2.7/site-packages'
