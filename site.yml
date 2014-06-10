@@ -4,3 +4,4 @@
     - common
     - { role: dropbox, tags: ['dropbox'] }  
     - { role: utils, tags: ['utils'] }
+    - { role: geeknote, tags: ['geeknote'] }

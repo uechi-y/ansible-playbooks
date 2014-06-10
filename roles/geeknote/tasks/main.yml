@@ -1,0 +1,9 @@
+---
+- name: install python-setuptools
+  apt: pkg={{ item }} state=present
+  with_items:
+    - stow
+    - python-setuptools
+
+- name: fetch geeknote git repository
+  git: repo=git://github.com/VitaliyRodnenko/geeknote.git dest=/tmp/geeknote
