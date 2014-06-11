@@ -1,3 +1,6 @@
 ---
 - name: restore iptables rule
   command: /etc/network/if-pre-up.d/iptables
+
+- name: restart rsyslogd
+  service: name=rsyslog state=restarted

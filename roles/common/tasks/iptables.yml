@@ -6,3 +6,8 @@
 
 - name: setup iptables startup script
   copy: dest=/etc/network/if-pre-up.d/iptables src=iptables owner=root group=root mode=0755
+
+- name: setup rsyslog conf for iptables
+  copy: dest=/etc/rsyslog.d/20-iptables.conf src=20-iptables.conf owner=root group=root mode=0644
+  notify:
+  - restart rsyslogd
