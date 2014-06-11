@@ -41,7 +41,7 @@
 -A INPUT  -j LOGGING 
 -A OUTPUT -j LOGGING 
 
--A LOGGING -m limit --limit 3/hour -j LOG --log-prefix "DROP:" 
+-A LOGGING -m limit --limit 3/hour -j LOG --log-prefix "[IPTABLES-DROP] "
 -A LOGGING -j DROP 
 
 COMMIT
