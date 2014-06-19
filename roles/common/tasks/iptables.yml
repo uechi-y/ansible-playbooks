@@ -11,3 +11,6 @@
   copy: dest=/etc/rsyslog.d/20-iptables.conf src=20-iptables.conf owner=root group=root mode=0644
   notify:
   - restart rsyslogd
+
+- name: setup logrotate conf for iptables
+  copy: dest=/etc/logrotate.d/iptables src=logrotate_iptables owner=root group=root mode=0644
